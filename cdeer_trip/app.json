@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/detail/detail",
+    "pages/list/list",
+    "pages/category/category",
+    "pages/mine/mine",
+    "pages/posts/posts"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "朝鹿志Trip",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#AAAAAA",
+    "selectedColor": "#262626",
+    "borderStyle": "black",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/index",
+        "iconPath": "images/homes.png",
+        "selectedIconPath": "images/homes_on.png"
+      },
+      {
+        "text": "栏目",
+        "pagePath": "pages/category/category",
+        "iconPath": "images/categorys.png",
+        "selectedIconPath": "images/categorys_on.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/mine/mine",
+        "iconPath": "images/users.png",
+        "selectedIconPath": "images/users_on.png"
+      }
+    ]
+  },
+  "plugins": {
+    "tencentvideo": {
+      "version": "1.3.7",
+      "provider": "wxa75efa648b60994b"
+    }
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wx4cf53bda66b14de9"
+  ],
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,229 @@
+/**
+ * Author : 丸子团队（波波、Chi、ONLINE.信）
+ * 朝鹿志: https://www.cdeer.cn/
+ */
+const API = require('../../utils/api')
+
+Page({
+
+  data: {
+    posts: [],
+    siteInfo: '',
+    page:1,
+    indicatorDots: !1,
+    autoplay: !0,
+    interval: 3e3,
+    currentSwiper: 0,
+    navBarHeight: wx.getSystemInfoSync().statusBarHeight,
+    placeHolder: '输入你想知道的内容...',
+    autoFocus: false,
+    inputEnable: true,
+  },
+
+  onLoad: function () {
+    let that=this;
+    wx.getSystemInfo({
+      success: function (a) {
+        that.setData({
+          isIphoneX: a.model.match(/iPhone X/gi)
+        });
+      }
+    });
+    this.getSiteInfo();
+    this.getStickyPosts();
+    this.getRandPosts();
+    this.getCategories();
+    this.getAdvert();
+    this.getPostList();
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function() {
+
+  },
+
+  onClear:function(){
+    this.setData({
+      searchKey:'',
+    })
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function() {
+    this.setData({
+      page:1,
+      posts:[]
+    })
+    this.getPostList()
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function() {
+    if (!this.data.isLastPage) {
+      this.getPostList({
+        page:this.data.page
+      })
+    }
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function() {
+    return {
+      title: '"' + this.data.siteInfo.name + '"小程序',
+      path: '/pages/index/index',
+      imageUrl: this.data.siteInfo.cover
+    }
+  },
+  getSiteInfo: function() {
+    API.getSiteInfo().then(res => {
+      this.setData({
+        siteInfo: res
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+
+  onInput: function(e) {
+    this.setData({
+      searchKey: e.detail.value
+    })
+  },
+
+  currentChange: function(e) {
+    this.setData({
+      currentSwiper: e.detail.current
+    });
+  },
+
+  getStickyPosts: function() {
+    API.getStickyPosts().then(res => {
+      this.setData({
+        stickyPost: res
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+
+  getRandPosts: function() {
+    API.getRandPosts({per_page:5}).then(res => {
+      this.setData({
+        randPost: res
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+
+  getCategories: function() {
+    API.getCategories().then(res => {
+      this.setData({
+        category: res
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+
+  getPostList: function(data) {
+    API.getPostsList(data).then(res => {
+      let args = {}
+      if (res.length < 10) {
+        this.setData({
+          isLastPage: true,
+          loadtext: '到底啦',
+          showloadmore: false
+        })
+      }
+      if (this.data.isBottom) {
+        args.posts = [].concat(this.data.posts, res)
+        args.page = this.data.page + 1
+      } else {
+        args.posts = [].concat(this.data.posts, res)
+        args.page = this.data.page + 1
+      }
+      this.setData(args)
+      wx.stopPullDownRefresh()
+    })
+    .catch(err => {
+      console.log(err)
+      wx.stopPullDownRefresh()
+    })
+  },
+
+  getAdvert: function() {
+    API.indexAdsense().then(res => {
+      console.log(res)
+      if(res.status === 200) {
+        this.setData({
+          advert: res.data
+        })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  },
+
+  bindCateByID: function (e) {
+    let id = e.currentTarget.id;
+    wx.navigateTo({
+      url: '/pages/list/list?id=' + id,
+    })
+  },
+
+  bindCateList:function(){
+    wx.switchTab({
+      url: '/pages/category/category',
+    })
+  },
+
+  bindDetail: function(e) {
+    let id = e.currentTarget.id;
+    wx.navigateTo({
+      url: '/pages/detail/detail?id=' + id,
+    })
+  },
+
+  onConfirm:function(e){
+    let s=e.detail.value;
+    wx.navigateTo({
+      url: '/pages/list/list?s='+s,
+    })
+  }
+
+})

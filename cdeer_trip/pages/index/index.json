@@ -1,0 +1,8 @@
+{
+  "enablePullDownRefresh": true,
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "txv-video": "plugin://tencentvideo/video"
+  }
+}

@@ -1,0 +1,112 @@
+<!--
+/**
+ * Author : 丸子团队（波波、Chi、ONLINE.信）
+ * 朝鹿志: https://www.cdeer.cn/
+ */
+ -->
+<!--index.wxml-->
+<view class="page {{isIphoneX?'iphone-x':''}}">
+  <view class="ui-recommend-module">
+   <swiper autoplay="{{autoplay}}" circular="{{circular}}" class="ui-swiper-wrapper" duration="{{duration}}" interval="{{interval}}">
+   <view catchtap="bindDetail" id="{{item.id}}" wx:for="{{stickyPost}}" wx:key="id">
+      <swiper-item class="ui-swiper-item">
+        <view class="cell-item ">
+          <image class="cell-image" mode="aspectFill" src="{{item.meta.thumbnail}}"></image>
+          <view class="cell-item-mask"></view>
+          <view class="cell-content">
+            <view class="cell-content-title ">
+              <view class="cell-circular {{item.sceneType=='groupActivity'?'cell-orange-circular':''}} "></view>
+              <view class="cell-text font-orange">{{item.category[0].name}}</view>
+            </view>
+            <view class="cell-content-main">
+              <view class="cell-text ">
+                <view class="cell-text-title">{{item.title.rendered}}
+                </view>
+              </view>
+              <navigator class="cell-button">
+                <button id="{{item.id}}" catchtap="bindDetail">
+                  立即查看
+                  <text class="icon-right-arrow"></text>
+                </button>
+              </navigator>
+            </view>
+          </view>
+        </view>
+      </swiper-item>
+    </view>
+    </swiper>
+    <view class="index-search container-class">
+      <view class="search-icon icon-class"></view>
+      <input bindconfirm="onConfirm" bindinput="onInput" class="search-input input-class" confirmType="search" focus="{{autoFocus}}" placeholder="{{placeHolder}}" placeholderClass="search-input-placeholder" value="{{searchKey}}" wx:if="{{inputEnable}}"></input>
+      <view class="search-input" wx:else>{{placeHolder}}</view>
+      <image bindtap="onClear" class="close-btn" src="https://cloud-minapp-16269.cloud.ifanrusercontent.com/product-image-close.svg" wx:if="{{searchKey}}"></image>
+    </view>
+  </view>
+  <view class="tab-content">
+    <view class="index">
+      <view class="card list-card" style="margin-top:26rpx" wx:if="{{randPost.length>0}}">
+        <view class="card-header">
+          <view class="card-header-label">推荐文章</view>
+          <view class="card-header-title">每日精心推荐</view>
+        </view>
+        <view class="card-content">
+          <view class="list">
+            <view catchtap="bindDetail" id="{{item.id}}" class="list-item" wx:for="{{randPost}}" wx:key="index">
+              <view class="item-image">
+                <image lazyLoad src="{{item.meta.thumbnail}}"></image>
+              </view>
+              <view class="item-content">
+                <text class="item-title">{{item.title.rendered}}</text>
+                <text class="item-des">{{item.excerpt.rendered}}</text>
+              </view>
+            </view>
+            <ad wx:if="{{advert}}" unit-id="{{advert.code}}"></ad>
+          </view>
+        </view>
+      </view>
+      <view class="index_article" wx:if="{{posts.length>0}}">
+        <block wx:for="{{posts}}" wx:for-index="i" wx:key="id">
+          <block wx:if="{{i%5 === 0}}">
+            <view catchtap="bindDetail" class="card video-card" id="{{item.id}}" style="margin-bottom: 26px">
+              <view class="video" style="{{videoStyle}}">
+                <txv-video height="388rpx" vid="{{item.media.video}}" playerid="txv1" wx:if="{{item.format==='video'}}"></txv-video>
+                <image lazyLoad mode="widthFix" wx:if="{{item.format!=='video'}}" src="{{item.meta.thumbnail}}"></image>
+              </view>
+              <view class="card-header video-card-header">
+                <view class="card-header-label">{{item.category[0].name}}</view>
+                <view class="card-header-title">{{item.title.rendered}}</view>
+                <view class="card-header-subtitle">{{item.excerpt.rendered}}</view>
+              </view>
+            </view>
+          </block>
+          <block wx:else>
+            <view catchtap="bindDetail" class="card image-card white-background" id="{{item.id}}" wx:if="{{item.format==='standard'}}" style="margin-bottom: 26px">
+              <view class="card-image">
+                <image lazyLoad mode="widthFix" src="{{item.meta.thumbnail}}"></image>
+              </view>
+              <view class="card-header image-card-header">
+                <view class="card-header-label wani-label" style="color: {{item.style}}">{{item.category[0].name}}</view>
+                <view class="card-header-title wanzi-title" style="color: {{item.style}}">{{item.title.rendered}}</view>
+              </view>
+            </view>
+            <view catchtap="bindDetail" class="card video-card" id="{{item.id}}" style="margin-bottom: 26px" wx:if="{{item.format==='video'}}">
+              <view class="video">
+                <txv-video vid="{{item.media.video}}" playerid="txv1"></txv-video>
+                <view class="cover-view" wx:if="{{playing}}">
+                  <image lazyLoad class="play-buttom" src="{{item.meta.thumbnail}}"></image>
+                </view>
+              </view>
+              <view class="card-header video-card-header">
+                <view class="card-header-label">{{item.category[0].name}}</view>
+                <view class="card-header-title">{{item.title.rendered}}</view>
+                <view class="card-header-subtitle">{{item.excerpt.rendered}}</view>
+              </view>
+            </view>
+          </block>
+        </block>
+      </view>
+      <view class="last_text" wx:if="{{isLastPage&&posts.length>0}}">已经到底啦~</view>
+      <view class="last_text" wx:if="{{!isLastPage&&posts.length>0}}">努力加载中...</view>
+    </view>
+  </view>
+</view>

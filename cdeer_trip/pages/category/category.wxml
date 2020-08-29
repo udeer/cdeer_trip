@@ -1,0 +1,40 @@
+<!--
+/**
+ * Author : 丸子团队（波波、Chi、ONLINE.信）
+ * 朝鹿志: https://www.cdeer.cn/
+ */
+ -->
+<!--pages/category/category.wxml-->
+<view class="ui-sence-recommend">
+  <view class="ui-recommend-title">
+    分类栏目
+  </view>
+  <view class="ui-commend-subtitle">
+    最新、最全、最具特色的资讯
+    <view class="cell-arrow-top">
+      <image class="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAOCAYAAAFLFEySAAAABGdBTUEAALGPC/xhBQAAASRJREFUOBGlVLtuhDAQxIiGQxQUiC9JfanzV/dTqXN1fgREgRDCSAjhMCh7rH32ZVGQLPY1M7uLRRT5nnmeDc4j17btdXdgeLNuUPV9b9I0fVAEjbquDyFepbXeu2iaZuTxiBKkSQXK6plBpmliHjMxDrERC0s/mxxA8vR2CRTgAGRZ9pUkyTObE+m6TldVlTnhw8WqQHhEBBbaQouYUwwmEM0mArsgETgECoH3rQJUFMXlr/GXZYnGcXwvy/Iuv5GMNXhzWI1lYsPoDgvDgS3e+i/TPqLF6nFAuq7rZ57nF/dyYexhGHQcxx8Y3QO3Qi8FXwlZLJsjFfYKnhE6K2wJ/kdIKqy2D38zxlyVUm++b+QSnfVp1ZvG96ZxD/78zhJL638A4n5rjTdLRDAAAAAASUVORK5CYII="></image>
+    </view>
+  </view>
+  <view class="ui-sence-list">
+    <view bindtap='bindCateByID' id="{{item.id}}" class="ui-sence-item " data-item="{{item}}" wx:for="{{category}}" wx:key="index">
+      <view class="cell-sence-icon">
+        <image class="" src="{{item.cover}}"></image>
+      </view>
+      <view class="cell-content-box">
+        <view class="cell-content">
+          <view class="cell-title text-overflow">{{item.name}}
+            <image class="cell-hot-icon" mode="widthFix" src="../../assets/img/icon-hot.svg" wx:if="{{item.isHot}}"></image>
+          </view>
+          <view class="cell-subtitle">{{item.description}}</view>
+          <view class="cell-description">
+            <view class="cell-time">{{item.count}}篇文章</view>
+            <view class="cell-peoples">{{item.date}}</view>
+          </view>
+        </view>
+        <view class="cell-link">
+          <text class="icon-right-arrow"></text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
